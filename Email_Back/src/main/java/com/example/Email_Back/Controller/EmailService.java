@@ -6,6 +6,7 @@ import com.example.Email_Back.Model.Email.EmailDB;
 import com.example.Email_Back.Model.Email.EmailHeader;
 import com.example.Email_Back.Model.User.User;
 import com.example.Email_Back.Model.User.UserHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,8 @@ import java.util.ArrayList;
 @RequestMapping("/")
 public class EmailService {
 
+    @Autowired
     private EmailCache cache;
-
-    public EmailService(EmailCache cache){
-        this.cache = cache;
-    }
 
     @GetMapping("email/open")
     public ResponseEntity<Email> retrieveEmail(@RequestBody String emailId){
