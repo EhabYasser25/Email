@@ -12,6 +12,7 @@ public class User {
     private ArrayList<String> trashEmailsIds;
     private ArrayList<String> draftEmailsIds;
     private ArrayList<Contact> contacts;
+    ArrayList<Email> Emails;
 
     public void setUserProperties (String name, String userEmail, String userPassword) {
         this.name = name;
