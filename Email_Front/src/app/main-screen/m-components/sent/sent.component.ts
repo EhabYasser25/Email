@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { EmailHeader } from 'src/app/Controller/Classes/EmailHeader';
 import { ProxyService } from 'src/app/Controller/Proxy/proxy.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { ActionService } from 'src/app/Controller/Classes/action.service';
 
 @Component({
   selector: 'app-inbox',
   templateUrl: './sent.component.html',
   styleUrls: ['./sent.component.css']
 })
-export class SentComponent implements OnInit{
+export class SentComponent {
 
   headers: EmailHeader[] = [];
   
@@ -19,34 +18,13 @@ export class SentComponent implements OnInit{
   //// Moving
   destination: string
 
-  constructor(public proxy: ProxyService, private action: ActionService) {
+  constructor(public proxy: ProxyService) {
     proxy.getEmailList("sent").
     subscribe(
       data => {
         this.headers = JSON.parse(data);
       }
     )
-  }
-
-  ngOnInit(): void {
-    this.action.$action.subscribe({
-      next: (action: string) => {
-        console.log(action)
-        let actions = action.split(",");
-        if(actions[0] != "sent") return;
-        switch(actions[1]) {
-          case 'sort': 
-            this.sort(actions[2]);
-            break;
-          // case 'search':
-          //   this.search(actions[2]);
-          //   break;
-          // case 'filter':
-          //   this.filter(actions[2]);
-          //   break;
-        }
-      }
-    })
   }
 
   move(){
@@ -83,20 +61,6 @@ export class SentComponent implements OnInit{
         });
       }
     }
-  }
-
-  sort(sortType: string) {
-    console.log(sortType)
-    this.proxy.sortEmails('sent', sortType)
-    .subscribe({
-      next: (data) => {
-        this.headers = JSON.parse(data);
-      },
-      error(err) {
-        alert(err.error)
-      }
-    });
-    console.log(sortType)
   }
 
 }

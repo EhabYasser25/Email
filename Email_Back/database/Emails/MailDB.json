@@ -1,1 +1,14 @@
-{ }
+{
+  "YXF3zFzBntVfByM" : {
+    "id" : "YXF3zFzBntVfByM",
+    "emailBody" : "dgfgdfgdfgdf",
+    "date" : "2023-01-03",
+    "sender" : "ehabyasser",
+    "receivers" : [ "ehabyasser1" ],
+    "subject" : "eee",
+    "attachments_IDS" : [ ],
+    "priority" : 3,
+    "counter" : "\u0000",
+    "read" : true
+  }
+}
