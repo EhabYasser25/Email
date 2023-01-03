@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EmailHeader } from 'src/app/Controller/Classes/EmailHeader';
 import { ProxyService } from 'src/app/Controller/Proxy/proxy.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { ActionService } from 'src/app/Controller/Classes/action.service';
 
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.css']
 })
-export class InboxComponent {
+export class InboxComponent implements OnInit{
 
   headers: EmailHeader[] = [];
   
@@ -23,38 +22,34 @@ export class InboxComponent {
   function: string
   functionParameter: string
 
-  constructor(public proxy: ProxyService, public _router: Router, public _route: ActivatedRoute) {
-    this._router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-          console.log('hi change detected');
+  constructor(public proxy: ProxyService, private action: ActionService) {
+    proxy.getEmailList("inbox").
+    subscribe(
+      data => {
+        this.headers = JSON.parse(data);
       }
+    )
+  }
 
-      if (event instanceof NavigationEnd) {
-        this._route.params.pipe(take(1)).subscribe(params => {
-          this.function = params['function'];
-          this.functionParameter = params['functionParameter'];
-          if(this.function == 'search'){
-            
-          }
-          else if(this.function == 'sort')
-          {
-
-          }
-          else{
-            proxy.getEmailList("inbox").
-            subscribe(
-              data => {
-                this.headers = JSON.parse(data);
-              }
-            )
-          }
-          })
+  ngOnInit(): void {
+    this.action.$action.subscribe({
+      next: (action: string) => {
+        console.log(action)
+        let actions = action.split(",");
+        if(actions[0] != "inbox") return;
+        switch(actions[1]) {
+          case 'sort': 
+            this.sort(actions[2]);
+            break;
+          // case 'search':
+          //   this.search(actions[2]);
+          //   break;
+          // case 'filter':
+          //   this.filter(actions[2]);
+          //   break;
+        }
       }
-
-      if (event instanceof NavigationError) {
-          console.log(event.error);
-      }
-  });
+    })
   }
 
   move(){
@@ -91,6 +86,20 @@ export class InboxComponent {
         });
       }
     }
+  }
+
+  sort(sortType: string) {
+    console.log(sortType)
+    this.proxy.sortEmails('inbox', sortType)
+    .subscribe({
+      next: (data) => {
+        this.headers = JSON.parse(data);
+      },
+      error(err) {
+        alert(err.error)
+      }
+    });
+    console.log(sortType)
   }
 
 }

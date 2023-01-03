@@ -10,9 +10,10 @@ import java.util.ArrayList;
 @Component
 @Scope("prototype")
 public class Email implements Cacheable {
+    private int importance;
     private String id;
     private String emailBody;
-    private String date;
+    private int date;
     private String sender;
     private ArrayList<String> receivers;
     private String subject;
@@ -42,7 +43,8 @@ public class Email implements Cacheable {
         this.read = false;
     }
 
-    public void setEmailProperties(String id, String emailBody, String date, String sender, ArrayList<String> receivers, String subject, ArrayList<String> attachments_IDS) {
+    public void setEmailProperties(String id, String emailBody, int date, String sender, ArrayList<String> receivers, String subject, ArrayList<String> attachments_IDS) {
+        this.importance = importance;
         this.id = id;
         this.emailBody = emailBody;
         this.date = date;
@@ -64,10 +66,10 @@ public class Email implements Cacheable {
         return emailBody;
     }
 
-    public void setDate(String date) {
+    public void setDate(int date) {
         this.date =  date;
     }
-    public String getDate() {
+    public int getDate() {
         return date;
     }
 
@@ -128,4 +130,10 @@ public class Email implements Cacheable {
                 ", read=" + read +
                 '}';
     }
+    public int getImportance() { return importance; }
+
+    public void setImportance(int importance) { this.importance = importance; }
+
+    public int getNumberOfReceivers() { return receivers.size(); }
+    public int getNumberOfAttachments() { return attachments_IDS.size(); }
 }

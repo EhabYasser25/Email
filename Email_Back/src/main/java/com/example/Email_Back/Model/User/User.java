@@ -1,8 +1,6 @@
 package com.example.Email_Back.Model.User;
 
 import com.example.Email_Back.Model.Caches.Cacheable;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
 import java.util.*;
 
