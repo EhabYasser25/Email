@@ -1,20 +1,30 @@
 package com.example.Email_Back.Model.User.SignUp;
 
 import com.example.Email_Back.Model.User.UserHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProxySignUp implements ISignUp{
 
     private ISignUp user;
     private String name;
     private String email;
-    private String mailExtension;
+    private final String mailExtension;
     private String password;
 
-    public ProxySignUp(String name, String email, String password) {
+    private UserHandler userHandler;
+
+    public ProxySignUp(String name, String email, String password, UserHandler userHandler) {
         this.setName(name);
-        this.setEmail(email.substring(0, email.indexOf("@")));
-        this.mailExtension = email.substring(email.indexOf("@"));
+        if(!email.contains("@")) {
+            this.setEmail(email);
+            this.mailExtension = "";
+        }
+        else {
+            this.setEmail(email.substring(0, email.indexOf("@")));
+            this.mailExtension = email.substring(email.indexOf("@"));
+        }
         this.setPassword(password);
+        this.userHandler = userHandler;
     }
 
     public String getName() {
@@ -41,11 +51,11 @@ public class ProxySignUp implements ISignUp{
         this.password = password;
     }
 
-    public void addUser() {
+    public String addUser() {
         this.checkValidInputs();
         this.checkExistence();
-        this.user = new SignUp(this.name, this.email, this.password);
-        this.user.addUser();
+        this.user = new SignUp(this.name, this.email, this.password, this.userHandler);
+        return this.user.addUser();
     }
 
     private void checkValidInputs() {
@@ -58,8 +68,7 @@ public class ProxySignUp implements ISignUp{
     }
 
     private void checkExistence() {
-        UserHandler check = new UserHandler(this.email);
-        if(check.exists())
+        if(userHandler.exists(this.email))
             throw new RuntimeException("User already exists!");
     }
 

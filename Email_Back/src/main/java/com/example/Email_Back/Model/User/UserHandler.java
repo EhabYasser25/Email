@@ -1,58 +1,47 @@
 package com.example.Email_Back.Model.User;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.Email_Back.Model.Caches.UserCache;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.util.ArrayList;
 
+@Component
 public class UserHandler {
 
-    private String directory = "Users\\";
-    private String extension = ".json";
-    private User user = new User();
+    @Autowired
+    private UserCache cache;
 
-    public UserHandler(User user) {
-        this.user = user;
+    public void saveUser(User user) {
+        cache.save(user);
     }
 
-    public UserHandler(String email) {
-        this.user.setUserEmail(email);
+    public User loadUser(String email) {
+        return cache.retrieve(email);
     }
 
-    public void saveUser() {
-        try (FileOutputStream myFile = new FileOutputStream(this.directory + this.user.getUserEmail() + this.extension)) {
-            ObjectMapper mapper = new ObjectMapper();
-            byte[] Obj = mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(this.user);
-            myFile.write(Obj);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+    public boolean exists(String email) {
+        return cache.exists(email);
     }
 
-    public User loadUser() {
-        try(FileReader myFile = new FileReader(this.directory + this.user.getUserEmail() + this.extension)) {
-            ObjectMapper mapper = new ObjectMapper();
-            this.user = mapper.readValue(myFile, new TypeReference<User>() {});
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-        return this.user;
+    public String getPassword(String email) {
+        return cache.retrieve(email).getUserPassword();
     }
 
-    public boolean exists() {
-        File f = new File(this.directory + this.user.getUserEmail() + this.extension);
-        return f.exists();
+    public ArrayList<String> getReceivedEmailsIds(String email) {
+        return cache.retrieve(email).getReceivedEmailsIds();
     }
 
-    public boolean rightPassword(String password) {
-        try(FileReader myFile = new FileReader(this.directory + this.user.getUserEmail() + this.extension)) {
-            ObjectMapper mapper = new ObjectMapper();
-            this.user = mapper.readValue(myFile,  new TypeReference<User>() {}); //TODO handle load password only
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return password.equals(this.user.getUserPassword());
+    public ArrayList<String> getSentEmailsIds(String email) {
+        return cache.retrieve(email).getSentEmailsIds();
+    }
+
+    public ArrayList<String> getTrashEmailsIds(String email) {
+        return cache.retrieve(email).getTrashEmailsIds();
+    }
+
+    public ArrayList<String> getDraftEmailsIds(String email) {
+        return cache.retrieve(email).getDraftEmailsIds();
     }
 
 }

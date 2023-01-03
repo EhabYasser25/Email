@@ -2,18 +2,28 @@ package com.example.Email_Back.Model.User.SignIn;
 
 import com.example.Email_Back.Model.User.User;
 import com.example.Email_Back.Model.User.UserHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ProxySignIn implements ISignIn{
 
     private ISignIn user;
     private String email;
-    private String mailExtension;
+    private final String mailExtension;
     private String password;
 
-    public ProxySignIn(String name, String email, String password) {
-        this.setEmail(email.substring(0, email.indexOf("@")));
-        this.mailExtension = email.substring(email.indexOf("@"));
+    private UserHandler userHandler;
+
+    public ProxySignIn(String email, String password, UserHandler userHandler) {
+        if(!email.contains("@")) {
+            this.setEmail(email);
+            this.mailExtension = "";
+        }
+        else {
+            this.setEmail(email.substring(0, email.indexOf("@")));
+            this.mailExtension = email.substring(email.indexOf("@"));
+        }
         this.setPassword(password);
+        this.userHandler = userHandler;
     }
 
     public String getEmail() {
@@ -32,11 +42,11 @@ public class ProxySignIn implements ISignIn{
         this.password = password;
     }
 
-    public User loadUser() {
+    public String loadUser() {
         this.checkValidInputs();
         this.checkExistence();
         this.checkPassword();
-        this.user = new SignIn(this.email, this.password);
+        this.user = new SignIn(this.email, this.password, this.userHandler);
         return this.user.loadUser();
     }
 
@@ -48,14 +58,13 @@ public class ProxySignIn implements ISignIn{
     }
 
     private void checkExistence() {
-        UserHandler check = new UserHandler(this.email);
-        if(!check.exists())
+        if(!this.userHandler.exists(this.email))
             throw new RuntimeException("User is not found!");
     }
 
     private void checkPassword() {
-        UserHandler check = new UserHandler(this.email);
-        if(!check.rightPassword(this.password))
+        String pass = userHandler.getPassword(this.email);
+        if(!pass.equals(this.password))
             throw new RuntimeException("Password is incorrect!");
     }
 

@@ -1,22 +1,34 @@
 package com.example.Email_Back.Model.User;
 
+import com.example.Email_Back.Model.Caches.Cacheable;
+
 import java.util.*;
 
-public class User {
+public class User implements Cacheable {
 
-    private String name;
-    private String userEmail;
-    private String userPassword;
-    private ArrayList<String> sentEmailsIds;
-    private ArrayList<String> recievedEmailsIds;
-    private ArrayList<String> trashEmailsIds;
-    private ArrayList<String> draftEmailsIds;
-    private ArrayList<Contact> contacts;
+    private String name = "";
+    private String id = "";
+    private String userPassword = "";
+    private ArrayList<String> sentEmailsIds = new ArrayList<>();
+    private ArrayList<String> receivedEmailsIds = new ArrayList<>();
+    private ArrayList<String> trashEmailsIds = new ArrayList<>();
+    private ArrayList<String> draftEmailsIds = new ArrayList<>();
+    private HashMap<String, Contact> contacts = new HashMap<>();
 
-    public void setUserProperties (String name, String userEmail, String userPassword) {
+    private HashMap<String, ArrayList<String>> folders = new HashMap<>();
+
+    public void setUserProperties (String name, String id, String userPassword) {
         this.name = name;
-        this.userEmail = userEmail;
+        this.id = id;
         this.userPassword = userPassword;
+    }
+
+    public HashMap<String, ArrayList<String>> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(HashMap<String, ArrayList<String>> folders) {
+        this.folders = folders;
     }
 
     public String getName() {
@@ -27,12 +39,12 @@ public class User {
         this.name = name;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getId() {
+        return id;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserPassword() {
@@ -51,12 +63,12 @@ public class User {
         this.sentEmailsIds = sentEmailsIds;
     }
 
-    public ArrayList<String> getRecievedEmailsIds() {
-        return recievedEmailsIds;
+    public ArrayList<String> getReceivedEmailsIds() {
+        return receivedEmailsIds;
     }
 
-    public void setRecievedEmailsIds(ArrayList<String> recievedEmailsIds) {
-        this.recievedEmailsIds = recievedEmailsIds;
+    public void setReceivedEmailsIds(ArrayList<String> receivedEmailsIds) {
+        this.receivedEmailsIds = receivedEmailsIds;
     }
 
     public ArrayList<String> getTrashEmailsIds() {
@@ -75,16 +87,16 @@ public class User {
         this.draftEmailsIds = draftEmailsIds;
     }
 
-    public ArrayList<Contact> getContacts() {
+    public HashMap<String, Contact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(ArrayList<Contact> contacts) {
+    public void setContacts(HashMap<String, Contact> contacts) {
         this.contacts = contacts;
     }
 
-    public void recieveEmail(String id) {
-        this.recievedEmailsIds.add(id);
+    public void receiveEmail(String id) {
+        this.receivedEmailsIds.add(id);
     }
 
     public void sendEmail(String id) {
@@ -106,14 +118,84 @@ public class User {
     }
 
     public void addContact(String name, String email) {
-        if(contacts.contains(name))
-            contacts.get(contacts.indexOf(name)).addUserEmail(email);
+        if(contacts.containsKey(name))
+            contacts.get(name).addUserEmail(email);
         else
-            contacts.add(new Contact(name, email));
+            getContacts().put(name, new Contact(name, email));
+    }
+
+    public void editContact(Contact editedContact) {
+        if(contacts.containsKey(editedContact.getName()))
+            contacts.put(editedContact.getName(), editedContact);
+        if(editedContact.getUserEmails().size() == 0)
+            contacts.remove(editedContact.getName());
     }
 
     public void forwardEmail() {
         //TODO prototype
+    }
+
+    public void addNewFolder(String folderName){
+        if(this.folders.containsKey(folderName))
+            return;
+        this.folders.put(folderName, new ArrayList<String>());
+    }
+
+    public void deleteFolder(String folderName){
+        if(!this.folders.containsKey(folderName))
+            return;
+        this.folders.remove(folderName);
+    }
+
+    public boolean moveEmail(String sourceFolder, String destinationFolder, String emailId){
+        switch (destinationFolder) {
+            case "Inbox" -> {
+                this.getReceivedEmailsIds().add(emailId);
+                System.out.println("moved To Inbox");
+            }
+            case "Sent" -> {
+                this.getSentEmailsIds().add(emailId);
+                System.out.println("moved to Sent");
+            }
+            case "Trash" -> {
+                this.getTrashEmailsIds().add(emailId);
+                System.out.println("moved to Trash");
+            }
+            case "Draft" -> {
+                this.getDraftEmailsIds().add(emailId);
+                System.out.println("moved to Draft");
+            }
+            default -> {
+                if(!this.folders.containsKey(destinationFolder))
+                    return false;
+                System.out.println("moved to " + destinationFolder);
+                this.folders.get(destinationFolder).add(emailId);
+            }
+        }
+        switch (sourceFolder) {
+            case "Inbox" -> {
+                this.getReceivedEmailsIds().remove(emailId);
+                System.out.println("moved from Inbox");
+            }
+            case "Sent" -> {
+                this.getSentEmailsIds().remove(emailId);
+                System.out.println("moved from Sent");
+            }
+            case "Trash" -> {
+                this.getTrashEmailsIds().remove(emailId);
+                System.out.println("moved from Trash");
+            }
+            case "Draft" -> {
+                this.getDraftEmailsIds().remove(emailId);
+                System.out.println("moved from Draft");
+            }
+            default -> {
+                if(!this.folders.containsKey(sourceFolder))
+                    return false;
+                this.folders.get(sourceFolder).remove(emailId);
+            }
+        }
+        return true;
     }
 
 }

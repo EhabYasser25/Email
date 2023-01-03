@@ -1,39 +1,53 @@
 package com.example.Email_Back.Controller;
 
+import com.example.Email_Back.Model.Caches.UserCache;
+import com.example.Email_Back.Model.Email.Email;
+import com.example.Email_Back.Model.User.Contact;
 import com.example.Email_Back.Model.User.SignIn.ProxySignIn;
 import com.example.Email_Back.Model.User.SignUp.ProxySignUp;
 import com.example.Email_Back.Model.User.User;
+import com.example.Email_Back.Model.User.UserHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping("/user/")
 public class UserService {
 
+    @Autowired
+    private UserHandler userHandler;
+    @Autowired
+    private UserCache userCache;
+
     @PostMapping("signUp")
-    public String signUp(@RequestBody ProxySignUp obj) {
+    public ResponseEntity<String> signUp(@RequestBody User obj) {
+        ProxySignUp proxy = new ProxySignUp(obj.getName(), obj.getId(), obj.getUserPassword(), this.userHandler);
+        System.out.println(obj.getId());
+        String email;
         try {
-            obj.addUser();
+            email = proxy.addUser();
         } catch (Exception e) {
-            return e.getMessage();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
-        return "User saved successfully";
+        return ResponseEntity.status(HttpStatus.OK).body(email);
     }
 
-    @PostMapping("signIn")
-    public User signIn(@RequestBody ProxySignIn obj) {
-        User user;
+    @GetMapping("signIn")
+    public ResponseEntity<String> signIn(@RequestParam(value = "userEmail") String email, @RequestParam(value = "pass") String password) {
+        System.out.println(password);
+        ProxySignIn proxy = new ProxySignIn(email, password, this.userHandler);
         try {
-            user = obj.loadUser();
+            email = proxy.loadUser();
         } catch (Exception e) {
             System.out.println(e.getMessage());
 <<<<<<< Updated upstream
-            return null;
-        }
-        return user;
-    }
-
-=======
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(email);
@@ -47,7 +61,7 @@ public class UserService {
 
     @PutMapping("editContact")
     public ResponseEntity<String> editContact(@RequestParam("userEmail") String userEmail, @RequestBody Contact contact){
-        System.out.println("Editing " + contact.getName());
+        System.out.println(contact.getName());
         if(contact.getUserEmails().contains(userEmail)){
             System.out.println("User editing himself");
             return ResponseEntity.status(HttpStatus.OK).body("User editing himself!!");
@@ -77,7 +91,6 @@ public class UserService {
 
     @DeleteMapping("deleteContact")
     public void deleteContact(@RequestParam("userEmail") String userEmail, @RequestParam("contactName") String contactName){
-        System.out.println("Deleting " + contactName);
         User user = this.userCache.retrieve(userEmail);
         user.getContacts().remove(contactName);
         this.userCache.update(user);
@@ -122,21 +135,13 @@ public class UserService {
     }
 
     @DeleteMapping("deleteFolder")
-    public void deleteFolder(@RequestParam("userEmail") String userEmail, @RequestParam("name") String folderName){
+    public ResponseEntity<String> deleteFolder(@RequestParam("userEmail") String userEmail, @RequestParam("name") String folderName){
         User user = this.userCache.retrieve(userEmail);
         if(!user.getFolders().containsKey(folderName))
-            return;
+            return ResponseEntity.status(HttpStatus.OK).body("Folder doesn't exists");
         user.deleteFolder(folderName);
         this.userCache.update(user);
+        return ResponseEntity.status(HttpStatus.OK).body("Folder Deleted Successfully");
     }
 
-    @PutMapping("moveEmail")
-    public ResponseEntity<String> moveEmail(@RequestParam("userEmail") String userEmail, @RequestParam("source") String sourceFolder, @RequestParam("destination") String destinationFolder, @RequestParam("emailId") String emailId){
-        User user = this.userCache.retrieve(userEmail);
-        if(!user.moveEmail(sourceFolder, destinationFolder, emailId))
-            return ResponseEntity.status(HttpStatus.OK).body("Folder doesn't exists");
-        this.userCache.update(user);
-        return ResponseEntity.status(HttpStatus.OK).body("Email Moved Successfully");
-    }
->>>>>>> Stashed changes
 }

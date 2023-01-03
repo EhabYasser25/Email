@@ -2,15 +2,19 @@ package com.example.Email_Back.Model.User.SignIn;
 
 import com.example.Email_Back.Model.User.User;
 import com.example.Email_Back.Model.User.UserHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class SignIn implements ISignIn{
 
     private String email;
     private String password;
 
-    public SignIn(String email, String password) {
+    private UserHandler userHandler;
+
+    public SignIn(String email, String password, UserHandler userHandler) {
         this.setEmail(email);
         this.setPassword(password);
+        this.userHandler = userHandler;
     }
 
 
@@ -34,12 +38,10 @@ public class SignIn implements ISignIn{
         this.password = password;
     }
 
-    public User loadUser() {
-        User user;
-        UserHandler loader = new UserHandler(this.email);
-        user = loader.loadUser();
+    public String loadUser() {
+        userHandler.loadUser(this.email);
         System.out.println("User loaded successfully");
-        return user;
+        return this.email;
     }
 
 }
