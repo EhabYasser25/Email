@@ -13,7 +13,7 @@ public class EmailBackApplication {
 	private EmailCache emailCache;
 
 
-<<<<<<< Updated upstream
+
 	public static void main(String[] args) {
 		SpringApplication.run(EmailBackApplication.class, args);
 	}
