@@ -1,0 +1,12 @@
+
+<!--<app-button *ngFor="let contact of contacts | paginate: {itemsPerPage: 14 , currentPage: p}" [header]="header"></app-button>-->
+<div id="contact-list" style="height: 94.5%;">
+  <app-button3 *ngFor="let contact of contacts" [contactName]="contact" (delete)="delete($event)"></app-button3>
+</div>
+<div id="tools">
+  <!--<div id="pagination">
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  </div>-->
+  <div style="width: 91.5%"></div>
+  <button id="extras-button" (click)="deleteContacts()"><fa-icon [icon]="Trash"></fa-icon></button>
+</div>
