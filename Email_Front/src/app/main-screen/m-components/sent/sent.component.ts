@@ -38,9 +38,9 @@ export class SentComponent implements OnInit{
           case 'sort': 
             this.sort(actions[2]);
             break;
-          // case 'search':
-          //   this.search(actions[2]);
-          //   break;
+            case 'search':
+              this.search(actions[2], actions[3]);
+              break;
           // case 'filter':
           //   this.filter(actions[2]);
           //   break;
@@ -97,6 +97,19 @@ export class SentComponent implements OnInit{
       }
     });
     console.log(sortType)
+  }
+
+  search(searchType, searchKey) {
+    console.log(searchType)
+    this.proxy.searchEmails('sent', searchType, searchKey)
+    .subscribe({
+      next: (data) => {
+        this.headers = JSON.parse(data);
+      },
+      error(err) {
+        alert(err.error)
+      }
+    });
   }
 
 }

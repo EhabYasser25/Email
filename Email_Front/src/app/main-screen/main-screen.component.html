@@ -6,17 +6,17 @@
         <div id="title-text"> MY mail</div>
       </div>
       <div id="search-section">
-        <input type="text" placeholder="Search.." id="search-text">
-        <select name="search-list" class="selection-list">
+        <input type="text" placeholder="Search..." id="search-text" [(ngModel)]="query" [ngModelOptions]="{standalone: true}" (keyup)="search()">
+        <select name="search-list" class="selection-list" [(ngModel)]="searchType">
           <option value="Attachments">Attachments</option>
-          <option value="Body" selected>Body</option>
+          <option value="Body">Body</option>
           <option value="Date">Date</option>
-          <option value="Importance">Importance</option>
+          <option value="Importance">Priority</option>
           <option value="Sender">Sender</option>
-          <option value="Subject">Subject</option>
+          <option value="Subject" selected>Subject</option>
           <option value="Receivers">Receivers</option>
         </select>
-        <button id="search-button">
+        <button id="search-button" (click)="search()">
           <fa-icon style="color: white;" [icon]="Search"></fa-icon>
         </button>
       </div>
@@ -26,89 +26,30 @@
           <option value="Attachments">Attachments</option>
           <option value="Body">Body</option>
           <option value="Date" selected>Date</option>
-          <option value="Importance">Importance</option>
+          <option value="Importance">Priority</option>
           <option value="Sender">Sender</option>
           <option value="Subject">Subject</option>
           <option value="Receivers">Receivers</option>
+        </select>
+        <select name="search-list" class="selection-list">
+          <option value="descendingly">Descendingly</option>
+          <option value="ascendingly" selected>Ascendingly</option>
         </select>
       </div>
       <div id="filter-section">
         <label>Filter:</label>
-        <select name="search-list" class="selection-list">
-          <option value="Attachments">Attachments</option>      <!--number of attachments-->
+        <select name="search-list" class="selection-list" (change)="filter($event)">
+          <option value="Attachments" (click)="filter($event)">Attachments</option>
           <option value="Date">Date</option>
-          <option value="Importance">Importance</option>
-          <option value="Sender">Sender</option>
-          <option value="Subject">Subject</option>
-          <option value="Receivers">Receivers</option>
+          <option value="Length">Length</option>
         </select>
+        <input id="select" type="checkbox" (click)="toggleInput()">                     <!--hna method eli bt2ol na m5tar wla la2 4of eli fi button component-->
+        <label [hidden]="!input" > Below/Above</label>
+        <label [hidden]="input" > Has attachments</label>
+        <input type="text" *ngIf="input" placeholder="Enter Input" id="filter-inputs" [(ngModel)]="compared" [ngModelOptions]="{standalone: true}">
       </div>
-      <div id="LogOut">
-        <button id="LogOut-button" (mouseup)="logOut()">LogOut</button>   <!--hna han7ot method on click tb3t ll back t2olo etl3 5als w n3ml routing fi ts-->
-      </div>
-    </header>
-    <aside>
-      <button id="Compose-button"  routerLink="/main-screen/compose">Compose <fa-icon style="color: red;" [icon]="Compose"></fa-icon></button>
-      <button class="Menu-buttons" routerLink="/main-screen/inbox">Inbox <fa-icon style="color: red;" [icon]="Inbox"></fa-icon></button>
-      <button class="Menu-buttons" routerLink="/main-screen/trash">Trash <fa-icon style="color: red;" [icon]="Trash"></fa-icon></button>
-      <button class="Menu-buttons" routerLink="/main-screen/draft">Draft <fa-icon style="color: red;" [icon]="Draft"></fa-icon></button>
-      <button class="Menu-buttons" routerLink="/main-screen/sent">Sent <fa-icon style="color: red;" [icon]="Sent"></fa-icon></button>
-      <button class="Menu-buttons" id="add-contact-button" routerLink="/main-screen/add-contact">Add contact <fa-icon style="color: red;" [icon]="Contacts"></fa-icon></button>
-      <button class="Menu-buttons" routerLink="/main-screen/contacts">Contacts <fa-icon style="color: red;" [icon]="Contacts"></fa-icon></button>
-      <button class="Menu-buttons" id="c-Folders-buttons" routerLink="/main-screen/create-folder">Create folder <fa-icon style="color: red;" [icon]="NewFolder"></fa-icon></button>
-      <hr style="width: 80%;">
-      <button class="Folder-buttons" id="s-Folders-buttons" *ngFor="let folder of this.proxy.getFolders()" routerLink="/main-screen/folder/{{folder}}" ><fa-icon style="color: red;" [icon]="Folders"></fa-icon>           {{folder}}</button>
-    
-    </aside>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
-  </div>
-</body>
-<body>
-  <div class="Grid-container">
-    <header>
-      <div id="title">
-        <img id="title-icon" src="https://cdn-icons-png.flaticon.com/512/324/324123.png">
-        <div id="title-text"> MY mail</div>
-      </div>
-      <div id="search-section">
-        <input type="text" placeholder="Search.." id="search-text" [(ngModel)]="query" [ngModelOptions]="{standalone: true}">
-        <select name="search-list" class="selection-list">
-          <option value="Attachments">Attachments</option>
-          <option value="Body" selected>Body</option>
-          <option value="Date">Date</option>
-          <option value="Importance">Importance</option>
-          <option value="Sender">Sender</option>
-          <option value="Subject">Subject</option>
-          <option value="Receivers">Receivers</option>
-        </select>
-        <button id="search-button" (mouseup)="search()">
-          <fa-icon style="color: white;" [icon]="Search"></fa-icon>
-        </button>
-      </div>
-      <div id="sort-section">
-        <label>Sort:</label>
-        <select name="search-list" class="selection-list" (change)="sort($event)">
-          <option value="Attachments">Attachments</option>
-          <option value="Body">Body</option>
-          <option value="Date" selected>Date</option>
-          <option value="Importance">Importance</option>
-          <option value="Sender">Sender</option>
-          <option value="Subject">Subject</option>
-          <option value="Receivers">Receivers</option>
-        </select>
-      </div>
-      <div id="filter-section">
-        <label>Filter:</label> 
-        <select name="search-list" class="selection-list">
-          <option value="Attachments">Attachments</option>      <!--number of attachments-->
-          <option value="Date">Date</option>
-          <option value="Importance">Importance</option>
-          <option value="Sender">Sender</option>
-          <option value="Subject">Subject</option>
-          <option value="Receivers">Receivers</option>
-        </select>
+      <div id="Reload">
+        <button id="Reload-button" (mouseup)="refresh()"><fa-icon [icon]="Refresh"></fa-icon></button> 
       </div>
       <div id="LogOut">
         <button id="LogOut-button" (mouseup)="logOut()">LogOut</button>   <!--hna han7ot method on click tb3t ll back t2olo etl3 5als w n3ml routing fi ts-->

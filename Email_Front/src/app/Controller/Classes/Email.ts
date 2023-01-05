@@ -5,8 +5,9 @@ export class Email {
         public sender?: string,
         public receivers?: string[],
         public subject?: string,
-        public date?: number,
+        public date?: string,
         public read?: boolean,
-        public priority?: number
+        public priority?: number,
+        public attachments_IDS?: string[]
     ) { }
 }

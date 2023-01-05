@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { EmailHeader } from 'src/app/Controller/Classes/EmailHeader';
 import { ProxyService } from 'src/app/Controller/Proxy/proxy.service';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import { take } from 'rxjs';
 import { ActionService } from 'src/app/Controller/Classes/action.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-inbox',
@@ -40,9 +39,9 @@ export class TrashComponent implements OnInit{
           case 'sort': 
             this.sort(actions[2]);
             break;
-          // case 'search':
-          //   this.search(actions[2]);
-          //   break;
+            case 'search':
+              this.search(actions[2], actions[3]);
+              break;
           // case 'filter':
           //   this.filter(actions[2]);
           //   break;
@@ -109,6 +108,19 @@ export class TrashComponent implements OnInit{
       }
     });
     console.log(sortType)
+  }
+
+  search(searchType, searchKey) {
+    console.log(searchType)
+    this.proxy.searchEmails('trash', searchType, searchKey)
+    .subscribe({
+      next: (data) => {
+        this.headers = JSON.parse(data);
+      },
+      error(err) {
+        alert(err.error)
+      }
+    });
   }
 
 }

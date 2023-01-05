@@ -38,7 +38,7 @@ public class Search {
                 break;
             case "importance":
                 for(Email email: emails)
-                    if(email.getImportance() == Integer.valueOf(searchKey))
+                    if(email.getPriority() == Integer.parseInt(searchKey))
                         result.add(email);
                 return result;
             //TODO Attachments///////////////////////////////////////////////////////////////////////////////////////

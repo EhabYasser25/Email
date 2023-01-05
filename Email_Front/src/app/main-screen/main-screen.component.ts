@@ -9,6 +9,7 @@ import {faAddressBook} from '@fortawesome/free-solid-svg-icons'
 import {faSearch} from '@fortawesome/free-solid-svg-icons'
 import {faFolderPlus} from '@fortawesome/free-solid-svg-icons'
 import {faFolder} from '@fortawesome/free-solid-svg-icons'
+import { faUndoAlt } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { ProxyService } from '../Controller/Proxy/proxy.service';
 import { take } from 'rxjs';
@@ -31,8 +32,12 @@ export class MainScreenComponent {
   Search = faSearch;
   NewFolder = faFolderPlus;
   Folders = faFolder;
+  Refresh = faUndoAlt;
 
   query: string
+  searchType: string = "Subject"
+  input : boolean = false;
+  compared: string = ""
 
   constructor(public router: Router, public proxy: ProxyService, private action: ActionService) {
     proxy.getFolderList().
@@ -43,19 +48,36 @@ export class MainScreenComponent {
     )
   }
 
+  toggleInput() {
+    this.input = !this.input;
+  }
+
   public logOut() {
     this.proxy.signOut().pipe(take(1)).subscribe();
     this.router.navigate(["/registeration/login"]);
   }
 
   search(){
-    this.router.navigate([`/main-screen/inbox/search/${this.query}`]); 
+    let emailType = this.router.url.split("/")[2];
+    this.action.setAction(`${emailType},search,${this.searchType.toLowerCase()},${this.query}`)
   }
 
   sort(event: any) {
-    let sortType = event.target.value.toLowerCase();
+    console.log("sorttttt")
+    let sortType = event.target.value;
     let emailType = this.router.url.split("/")[2];
-    this.action.setAction(emailType + ",sort," + sortType)
+    this.action.setAction(`${emailType},sort,${sortType.toLowerCase()}`)
+  }
+
+  filter(event: any) {
+    console.log(event.target.value)
+    let filterType = event.target.value.toLowerCase();
+    let emailType = this.router.url.split("/")[2];
+    let bool = "";
+    if(this.input) bool = "true"
+    else bool = "false"
+    console.log(`${emailType},filter,${filterType.toLowerCase()},${this.compared},${bool}`)
+    this.action.setAction(`${emailType},filter,${filterType.toLowerCase()},${this.compared},${bool}`)
   }
 
   deleteFolder($event){
@@ -63,4 +85,12 @@ export class MainScreenComponent {
     this.proxy.getFolders().splice(this.proxy.getFolders().indexOf($event),1)
   }
 
+  refresh() {
+    const url= this.router.url;
+    this.router.navigateByUrl('/',{skipLocationChange:true}).then(()=>{
+      this.router.navigate([`/${url}`]).then(()=>{
+        console.log(`After navigation I am on:${this.router.url}`)
+      })
+    })
+  }
 }

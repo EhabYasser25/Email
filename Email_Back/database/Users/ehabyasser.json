@@ -2,10 +2,15 @@
   "name" : "Ehab Yasser Al Kerm",
   "id" : "ehabyasser",
   "userPassword" : "ehab",
-  "sentEmailsIds" : [ "YXF3zFzBntVfByM", "UmR5rlRiBe1mbML", "E3BbIQoHy7dZI8H", "z1A7Ijc2wFleQk8" ],
-  "receivedEmailsIds" : [ ],
+  "sentEmailsIds" : [ ],
+  "receivedEmailsIds" : [ "8N6wiy43pk1RaeI", "8tmM4hTQubWaeHc", "1P1nHkvOksvDdPj", "BGYwf4es9fIi5zg", "k0uq2JJqGIs0sEo" ],
   "trashEmailsIds" : [ ],
   "draftEmailsIds" : [ ],
-  "contacts" : { },
+  "contacts" : {
+    "Ehab" : {
+      "name" : "Ehab",
+      "userEmails" : [ "ehabyasser1@mymail.com" ]
+    }
+  },
   "folders" : { }
 }
