@@ -282,6 +282,7 @@ public class EmailService {
         ArrayList<Email> emails = new ArrayList<>();
         Collections.addAll(emails, this.emailCache.retrieve(userEmailsIDS));
         ICriteria criteria = null;
+        compared = compared.replaceAll("-","");
         switch (filterType) {
             case "attachments":
                 System.out.println("aaaaaaaaaaaaaaaaaa");

@@ -19,7 +19,7 @@ public class CriteriaDate implements ICriteria {
         ArrayList<Email> met = new ArrayList<>();
         if(Larger) {
             for (Email email : emails) {
-                System.out.println(Integer.parseInt(email.getDate().replaceAll("-", ""))>0);
+                System.out.println(Integer.parseInt(email.getDate().replaceAll("-", "")) + 4);
                 if (Integer.parseInt(email.getDate().replaceAll("-", "")) >= Integer.parseInt(SpecifiedDate))
                     met.add(email);
             }

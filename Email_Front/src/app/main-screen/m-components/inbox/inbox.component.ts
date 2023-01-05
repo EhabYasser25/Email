@@ -47,6 +47,8 @@ export class InboxComponent implements OnInit{
           case 'filter':
             this.filter(actions[2], actions[3], actions[4]);
             break;
+          case 'reverseHeaders':
+            this.headers = this.headers.reverse()
         }
       }
     })

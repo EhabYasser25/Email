@@ -40,9 +40,11 @@ export class DraftComponent implements OnInit{
             case 'search':
               this.search(actions[2], actions[3]);
               break;
-          // case 'filter':
-          //   this.filter(actions[2]);
-          //   break;
+            case 'filter':
+              this.filter(actions[2], actions[3], actions[4]);
+              break;
+            case 'reverseHeaders':
+              this.headers = this.headers.reverse()
         }
       }
     })
@@ -73,4 +75,18 @@ export class DraftComponent implements OnInit{
       }
     });
   }
+
+  filter(filterType: string, compared: string, bool: string) {
+    console.log(filterType)
+    this.proxy.filterEmails('draft', filterType, compared, bool)
+    .subscribe({
+      next: (data) => {
+        this.headers = JSON.parse(data);
+      },
+      error(err) {
+        alert(err.error)
+      }
+    });
+  }
+
 }

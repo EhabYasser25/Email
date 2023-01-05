@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {faPencilAlt} from '@fortawesome/free-solid-svg-icons'
+import {faFilter, faPencilAlt, faRecycle} from '@fortawesome/free-solid-svg-icons'
 import {faInbox} from '@fortawesome/free-solid-svg-icons'
 import {faStar} from '@fortawesome/free-solid-svg-icons'
 import {faTrashAlt} from '@fortawesome/free-solid-svg-icons'
@@ -33,9 +33,12 @@ export class MainScreenComponent {
   NewFolder = faFolderPlus;
   Folders = faFolder;
   Refresh = faUndoAlt;
+  Filter = faFilter;
+  Reverse = faRecycle;
 
   query: string
   searchType: string = "Subject"
+  filterType: string = "Attachments"
   input : boolean = false;
   compared: string = ""
 
@@ -69,15 +72,13 @@ export class MainScreenComponent {
     this.action.setAction(`${emailType},sort,${sortType.toLowerCase()}`)
   }
 
-  filter(event: any) {
-    console.log(event.target.value)
-    let filterType = event.target.value.toLowerCase();
+  filter() {
     let emailType = this.router.url.split("/")[2];
     let bool = "";
     if(this.input) bool = "true"
     else bool = "false"
-    console.log(`${emailType},filter,${filterType.toLowerCase()},${this.compared},${bool}`)
-    this.action.setAction(`${emailType},filter,${filterType.toLowerCase()},${this.compared},${bool}`)
+    console.log(`${emailType},filter,${this.filterType.toLowerCase()},${this.compared},${bool}`)
+    this.action.setAction(`${emailType},filter,${this.filterType.toLowerCase()},${this.compared},${bool}`)
   }
 
   deleteFolder($event){
@@ -93,4 +94,11 @@ export class MainScreenComponent {
       })
     })
   }
+
+  reverseHeaders() {
+    let emailType = this.router.url.split("/")[2];
+    console.log(`${emailType},reverseHeaders`)
+    this.action.setAction(`${emailType},reverseHeaders`)
+  }
+
 }

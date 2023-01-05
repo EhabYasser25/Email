@@ -31,22 +31,21 @@
           <option value="Subject">Subject</option>
           <option value="Receivers">Receivers</option>
         </select>
-        <select name="search-list" class="selection-list">
-          <option value="descendingly">Descendingly</option>
-          <option value="ascendingly" selected>Ascendingly</option>
-        </select>
+        <button class="selection-list" (mouseup)="reverseHeaders()">Reverse Order</button>
       </div>
       <div id="filter-section">
         <label>Filter:</label>
-        <select name="search-list" class="selection-list" (change)="filter($event)">
-          <option value="Attachments" (click)="filter($event)">Attachments</option>
+        <select name="search-list" class="selection-list" [(ngModel)]="filterType" [ngModelOptions]="{standalone: true}">
+          <option value="Attachments">Attachments</option>
           <option value="Date">Date</option>
-          <option value="Length">Length</option>
+          <option value="Length">Body Length</option>
         </select>
         <input id="select" type="checkbox" (click)="toggleInput()">                     <!--hna method eli bt2ol na m5tar wla la2 4of eli fi button component-->
-        <label [hidden]="!input" > Below/Above</label>
-        <label [hidden]="input" > Has attachments</label>
-        <input type="text" *ngIf="input" placeholder="Enter Input" id="filter-inputs" [(ngModel)]="compared" [ngModelOptions]="{standalone: true}">
+        <label [hidden]="filterType != 'Date'" > Later </label>
+        <label [hidden]="filterType != 'Length'" > Above </label>
+        <label [hidden]="filterType != 'Attachments'" > Has attachments </label>
+        <input type="text" *ngIf="filterType == 'Date' || filterType == 'Length'" placeholder="Enter Input" id="filter-inputs" [(ngModel)]="compared" [ngModelOptions]="{standalone: true}">
+        <button id="filter-button" (click)="filter()"><fa-icon style="color: red;" [icon]="Filter"></fa-icon></button>
       </div>
       <div id="Reload">
         <button id="Reload-button" (mouseup)="refresh()"><fa-icon [icon]="Refresh"></fa-icon></button> 

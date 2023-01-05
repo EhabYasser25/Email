@@ -41,9 +41,11 @@ export class SentComponent implements OnInit{
             case 'search':
               this.search(actions[2], actions[3]);
               break;
-          // case 'filter':
-          //   this.filter(actions[2]);
-          //   break;
+            case 'filter':
+              this.filter(actions[2], actions[3], actions[4]);
+              break;
+            case 'reverseHeaders':
+              this.headers = this.headers.reverse()
         }
       }
     })
@@ -101,6 +103,19 @@ export class SentComponent implements OnInit{
   search(searchType, searchKey) {
     console.log(searchType)
     this.proxy.searchEmails('sent', searchType, searchKey)
+    .subscribe({
+      next: (data) => {
+        this.headers = JSON.parse(data);
+      },
+      error(err) {
+        alert(err.error)
+      }
+    });
+  }
+
+  filter(filterType: string, compared: string, bool: string) {
+    console.log(filterType)
+    this.proxy.filterEmails('sent', filterType, compared, bool)
     .subscribe({
       next: (data) => {
         this.headers = JSON.parse(data);

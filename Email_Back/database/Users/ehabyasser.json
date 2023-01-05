@@ -12,5 +12,7 @@
       "userEmails" : [ "islamyasser@mymail.com" ]
     }
   },
-  "folders" : { }
+  "folders" : {
+    "ehab" : [ ]
+  }
 }
