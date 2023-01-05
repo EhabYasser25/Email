@@ -118,7 +118,7 @@ public class Email implements Cacheable {
         return "Email{" +
                 "id='" + id + '\'' +
                 ", emailBody='" + emailBody + '\'' +
-                ", date=" + date +
+                ", date='" + date + '\'' +
                 ", sender='" + sender + '\'' +
                 ", receivers=" + receivers +
                 ", subject='" + subject + '\'' +
@@ -129,6 +129,6 @@ public class Email implements Cacheable {
                 '}';
     }
 
-    public int getNumberOfReceivers() { return receivers.size(); }
-    public int getNumberOfAttachments() { return attachments_IDS.size(); }
+    public int receiversNumber() { return receivers.size(); }
+    public int attachmentsNumber() { return attachments_IDS.size(); }
 }

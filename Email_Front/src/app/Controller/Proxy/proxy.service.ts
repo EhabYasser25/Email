@@ -87,10 +87,6 @@ export class ProxyService {
     return this.http.getRequest(`email/sort?userEmail=${this.currentUser}&emailType=${emailType}&sortType=${sortType}`);
   }
 
-  // public sortEmails(emailType: string, sortType: string){
-  //   return this.http.getRequest(`email/sort?userEmail=${this.currentUser}&emailType=${emailType}&searchType=${sortType}&searchKey=ther`);
-  // }
-
   public signOut(){
     return this.http.putRequest(`user/signOut?userEmail=${this.currentUser}`)
   }
@@ -139,8 +135,7 @@ export class ProxyService {
     return this.http.putRequest(`email/restoreEmail?userEmail=${this.currentUser}&emailId=${emailId}`)
   }
 
-  public createDraft(emailParameters: string[]){
-    alert(emailParameters)
+  public createDraft(emailParameters: string[]){ 
     return this.http.postRequest(`email/draft`, emailParameters)
   }
 

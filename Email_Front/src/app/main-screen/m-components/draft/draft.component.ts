@@ -22,7 +22,6 @@ export class DraftComponent implements OnInit{
     proxy.getEmailList("draft").
     subscribe(
       data => {
-        alert(data)
         this.headers = JSON.parse(data);
       }
     )

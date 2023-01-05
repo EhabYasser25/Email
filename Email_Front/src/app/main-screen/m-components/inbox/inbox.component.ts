@@ -58,7 +58,6 @@ export class InboxComponent implements OnInit{
         this.proxy.moveEmails("Inbox", this.destination, header.id).
         subscribe({
           next: (data) => {
-            alert(data);
             if(data == 'Email Moved Successfully')
               this.headers.splice(this.headers.indexOf(header), 1)
           },

@@ -8,6 +8,8 @@ export class Email {
         public date?: string,
         public read?: boolean,
         public priority?: number,
-        public attachments_IDS?: string[]
+        public attachments_IDS?: string[],
+        public numberOfReceivers?: number,
+        public numberOfAttachments?: number
     ) { }
 }

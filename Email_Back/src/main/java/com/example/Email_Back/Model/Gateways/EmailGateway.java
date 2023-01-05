@@ -51,6 +51,7 @@ public class EmailGateway implements Gateway{
     public void save(Cacheable email){
         if(this.database.isEmpty())
             this.database = this.loadAll();
+        System.out.println(((Email) email).toString());
         this.database.put(email.getId(), (Email) email);
     }
 

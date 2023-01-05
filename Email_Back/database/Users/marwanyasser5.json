@@ -1,0 +1,23 @@
+{
+  "name" : "Marwan Yasser Sabry",
+  "id" : "marwanyasser5",
+  "userPassword" : "maro",
+  "sentEmailsIds" : [ "sM2Yi88vXBkKYaI", "MnmBE05YvZohml2", "UPbNhpGUjwbPfiV", "yf8BhhprXUFSXdm", "wTwAdSpAy1d1le4" ],
+  "receivedEmailsIds" : [ "tcNkFLFSfaDSD8T", "kZBdDagWKUw5Rnq", "lz4lPaAstbSmw64", "dVLyOum7HmsRfVT" ],
+  "trashEmailsIds" : [ ],
+  "draftEmailsIds" : [ ],
+  "contacts" : {
+    "Mkario" : {
+      "name" : "Mkario",
+      "userEmails" : [ "mkario@mymail.com" ]
+    },
+    "Islam Yasser" : {
+      "name" : "Islam Yasser",
+      "userEmails" : [ "islamyasser@mymail.com" ]
+    }
+  },
+  "folders" : {
+    "Mkario" : [ "ctiJDUJ9GGiIlGO" ],
+    "Islam" : [ "ZVH8SgDSJ0sQuIP" ]
+  }
+}

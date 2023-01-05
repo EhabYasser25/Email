@@ -1,0 +1,16 @@
+{
+  "name" : "Islam Yasser",
+  "id" : "islamyasser",
+  "userPassword" : "islam",
+  "sentEmailsIds" : [ "ZVH8SgDSJ0sQuIP", "pLz40h8m2kSYTNQ", "lz4lPaAstbSmw64", "p32ns7wblgV5O2E", "nbZo4o0H2Ln0J8R" ],
+  "receivedEmailsIds" : [ "ctiJDUJ9GGiIlGO", "TEU3ckiywc2vBDL" ],
+  "trashEmailsIds" : [ ],
+  "draftEmailsIds" : [ ],
+  "contacts" : {
+    "mkario" : {
+      "name" : "mkario",
+      "userEmails" : [ "mkario@mymail.com" ]
+    }
+  },
+  "folders" : { }
+}

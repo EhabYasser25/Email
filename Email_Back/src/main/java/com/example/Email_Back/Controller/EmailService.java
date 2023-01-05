@@ -284,13 +284,21 @@ public class EmailService {
         ICriteria criteria = null;
         switch (filterType) {
             case "attachments":
+                System.out.println("aaaaaaaaaaaaaaaaaa");
                 criteria = new CriteriaHasAttachments(Boolean.parseBoolean(bool));
+                break;
             case "read":
+                System.out.println("bbbbbbbbbbb");
                 criteria = new CriteriaRead(Boolean.parseBoolean(bool));
+                break;
             case "date":
+                System.out.println("cccccccccccccccc");
                 criteria = new CriteriaDate(compared, Boolean.parseBoolean(bool));
+                break;
             case "length":
+                System.out.println("dddddddddddddddddddddd");
                 criteria = new CriteriaBodyLength(Integer.parseInt(compared), Boolean.parseBoolean(bool));
+                break;
         }
         ArrayList<Email> result = criteria.meetCriteria(emails);
         EmailHeader[] headers = new EmailHeader[result.size()];
@@ -298,6 +306,7 @@ public class EmailService {
             if (result.get(result.size() - 1 - i) != null)
                 headers[i] = result.get(result.size() - 1 - i).createHeader();
         }
+        for(int i = 0; i < headers.length; i++) System.out.println("header i: " + headers[i].getId());
         return ResponseEntity.status(HttpStatus.OK).body(headers);
     }
 

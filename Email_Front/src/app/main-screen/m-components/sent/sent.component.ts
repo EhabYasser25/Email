@@ -55,7 +55,6 @@ export class SentComponent implements OnInit{
         this.proxy.moveEmails("Sent", this.destination, header.id).
         subscribe({
           next: (data) => {
-            alert(data);
             if(data == 'Email Moved Successfully')
               this.headers.splice(this.headers.indexOf(header), 1)
           },
